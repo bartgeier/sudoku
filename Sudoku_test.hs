@@ -8,6 +8,7 @@ import Test_Block
 import Test_Rule
 import Test_Board
 import Test_BruteforceBacktrack
+import Test_SortedBacktrack
 
 main :: IO ()
 main = do 
@@ -22,5 +23,7 @@ main = do
       test_Board
       putStrLn "  "
       test_BruteforceBacktrack
+      putStrLn "  "
+      test_SortedBacktrack
       
       
