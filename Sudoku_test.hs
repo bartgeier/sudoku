@@ -2,6 +2,7 @@
 module Main where
 --import PseudoMacros
 --import TestKit
+import Test_Tool_List
 import Test_Cell
 import Test_Field
 import Test_Block
@@ -12,6 +13,8 @@ import Test_SortedBacktrack
 
 main :: IO ()
 main = do 
+      test_Tool_List
+      putStrLn "  "
       test_cell
       putStrLn "  "
       test_Field

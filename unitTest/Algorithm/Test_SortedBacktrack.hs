@@ -48,6 +48,7 @@ test_candidates :: IO ()
 test_candidates = do
       tst_EQUAL ((0,2),[Tmp "1",Tmp "2",Tmp "5",Tmp "7",Tmp "9"]) (candidates sudoku (0,2) dictonary)
       putStrLn("candidates, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))
+      
       tst_EQUAL ((1,0),[]) (candidates sudoku (1,0) dictonary)
       putStrLn("candidates, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))
 
@@ -59,31 +60,25 @@ test_track = do
           
       tst_EQUAL 61 (length t)
       putStrLn("track, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int)) 
+      
       tst_EQUAL ((7,7),[Tmp "3"]) (head t)
       putStrLn("track, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int)) 
+      
       tst_EQUAL ((7,7),[Tmp "3"]) (head t)
       putStrLn("track, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int)) 
       
       let (Just a0) = (Map.lookup (5,4) mapT)
       tst_EQUAL [Tmp "3",Tmp "7"] a0
       putStrLn("track, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int)) 
+      
       let a1 = (Map.lookup (1,0) mapT)
       tst_EQUAL Nothing a1
-      putStrLn("track, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int)) 
+      putStrLn("track, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))
+      
       let (Just a2) = (Map.lookup (6,5) mapT)
       tst_EQUAL [Tmp "3",Tmp "4",Tmp "5",Tmp "6",Tmp "7",Tmp "8",Tmp "9"] a2
       putStrLn("track, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))
-      
 
-      
-      
- 
-      {-
-      tst_EQUAL 
-            ([Tmp "1",Tmp "2",Tmp "3"], [Tmp "4",Tmp "5",Tmp "6",Tmp "7",Tmp "8",Tmp "9"]) 
-            (nextCell dictonary sudoku (1, 0))--3
-      putStrLn("track, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))      
-      -}
  
 
 
