@@ -1,5 +1,6 @@
 module Tool_List
 ( at
+, ListZipper
 , goForward
 , goBack
 ) where

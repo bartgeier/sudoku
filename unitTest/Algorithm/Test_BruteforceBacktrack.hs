@@ -13,8 +13,8 @@ import BruteforceBacktrack.Internal
 test_BruteforceBacktrack :: IO ()
 test_BruteforceBacktrack = do
       test_nextCell
-      test_setCell
-      test_track
+      test_setNextCanditate
+      test_bruteforce
 
 
       
@@ -187,8 +187,8 @@ test_nextCell = do
             (nextCell dictonary sudoku (0, 0))--Empty
       putStrLn("nextCell, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))                   
       
-test_setCell :: IO ()
-test_setCell = do  
+test_setNextCanditate :: IO ()
+test_setNextCanditate = do  
       let (newBoard0, step0) = setNextCanditate sudoku (0,0) dictonary
       tst_EQUAL newBoard0 board0  
       tst_EQUAL (Just 1, Just 0) (step0 newBoard0 (Just 0, Just 0))
@@ -215,8 +215,8 @@ test_setCell = do
       putStrLn("setNextCanditate, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))      
 
 
-test_track :: IO ()
-test_track = do  
+test_bruteforce :: IO ()
+test_bruteforce = do  
       let s0' = bruteforce s0 (Nothing,Nothing) next dictonary
       tst_EQUAL s0' solvedSudoku
       putStrLn("bruteforce, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))  
