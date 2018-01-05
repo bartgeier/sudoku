@@ -43,9 +43,10 @@
       <w>190</w>
       <h>70</h>
     </coordinates>
-    <panel_attributes>increment or decrement
-Board index
-(x,y) = step(board,(x,y))</panel_attributes>
+    <panel_attributes>(x,y) = step(board,(x,y))
+--
+increment or decrement
+Board index</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -75,15 +76,15 @@ Board(x,y) == Fix</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>320</x>
-      <y>460</y>
+      <y>470</y>
       <w>350</w>
-      <h>170</h>
+      <h>160</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 Board(x,y) == Tmp
 or
 Board(x,y) == Empty</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;150.0;330.0;150.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;140.0;330.0;140.0</additional_attributes>
   </element>
   <element>
     <id>UMLState</id>
@@ -91,11 +92,12 @@ Board(x,y) == Empty</panel_attributes>
       <x>180</x>
       <y>360</y>
       <w>280</w>
-      <h>110</h>
+      <h>120</h>
     </coordinates>
-    <panel_attributes>setCell
+    <panel_attributes>(Board,step) = setNextCanditate 
+see Candidates.JPG
 --
-Board(x,y) = nextCell Value From Dictonary
+Board(x,y) = next candidate
 if Board(x,y) == Empty
         step = decrement
 else

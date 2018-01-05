@@ -1,27 +1,19 @@
 {-# LANGUAGE TemplateHaskell #-}
-module Test_SortedBacktrack
-( test_SortedBacktrack
+module Test_Backtrack
+( test_Backtrack
 ) where
 
 import PseudoMacros
 import TestKit
 import Board
-import SortedBacktrack
-import qualified Data.Map as Map
-import Tool_List
+import Backtrack
+import Track
 
-
-
-
-test_SortedBacktrack :: IO ()
-test_SortedBacktrack = do
-      test_candidates
-      test_createSortedTrack
+test_Backtrack :: IO ()
+test_Backtrack = do
       test_nextCell
       test_setNextCanditate
-      test_goForward
-      test_goBack
-      test_sortedBacktrack
+      test_backtrack
 
 
       
@@ -171,65 +163,7 @@ board2 = (field ( "5,3, , , , , , , ," ++ "\n"
                ++ " ,6, , , , ,2,8, ," ++ "\n"
                ++ " , , ,4,1,9, , ,5," ++ "\n"
                ++ " , , , , , , ,7, ," ++ "\n"))                
-          
-test_candidates :: IO ()          
-test_candidates = do
-      tst_EQUAL ((0,2),[Tmp "1",Tmp "2",Tmp "5",Tmp "7",Tmp "9"]) (candidates sudoku (0,2) dictonary)
-      putStrLn("candidates, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))
-      
-      tst_EQUAL ((1,0),[]) (candidates sudoku (1,0) dictonary)
-      putStrLn("candidates, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))
-
-
-test_createSortedTrack :: IO ()
-test_createSortedTrack = do
-      let track1 = createSortedTrack sudoku (Nothing,Nothing) dictonary
-          mapT = Map.fromList track1
-          
-      tst_EQUAL 61 (length track1)
-      putStrLn("createSortedTrack, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int)) 
-      
-      tst_EQUAL ((7,7),[Tmp "3"]) (head track1)
-      putStrLn("createSortedTrack, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int)) 
-      
-      tst_EQUAL ((7,7),[Tmp "3"]) (head track1)
-      putStrLn("createSortedTrack, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int)) 
-      
-      let (Just a0) = (Map.lookup (5,4) mapT)
-      tst_EQUAL [Tmp "3",Tmp "7"] a0
-      putStrLn("createSortedTrack, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int)) 
-      
-      let a1 = (Map.lookup (1,0) mapT)
-      tst_EQUAL Nothing a1
-      putStrLn("createSortedTrack, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))
-      
-      let (Just a2) = (Map.lookup (6,5) mapT)
-      tst_EQUAL [Tmp "3",Tmp "4",Tmp "5",Tmp "6",Tmp "7",Tmp "8",Tmp "9"] a2
-      putStrLn("createSortedTrack, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))
-
-test_goForward :: IO ()
-test_goForward = do
-      -----
-      let track2 = createSortedTrack s0 (Nothing,Nothing) dictonary
-      tst_EQUAL  [((8,8),[Tmp "9"])] track2
-      putStrLn("goForward, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))
-      
-      let zippedTrack = goForward ([],track2)
-      tst_EQUAL  ([((8,8),[Tmp "9"])],[]) zippedTrack
-      putStrLn("goForward, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))
-      
-test_goBack :: IO ()
-test_goBack = do
-      -----
-      let track2 = createSortedTrack s0 (Nothing,Nothing) dictonary
-      tst_EQUAL  [((8,8),[Tmp "9"])] track2
-      putStrLn("goBack, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))
-      
-      let zippedTrack = goBack (track2,[])
-      tst_EQUAL  ([],[((8,8),[Tmp "9"])]) zippedTrack
-      putStrLn("goBack, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))      
-
-      
+    
 test_nextCell :: IO ()
 test_nextCell = do
       tst_EQUAL 
@@ -250,87 +184,81 @@ test_nextCell = do
       
 test_setNextCanditate :: IO ()
 test_setNextCanditate = do  
-      let track = [((1,0),[Tmp "1"])
-                  ,((2,0),[Tmp "2"])
-                  ,((3,0),[Tmp "3"])
-                  ,((4,0),[Tmp "4"])
-                  ,((5,0),[Tmp "5"])]
+      let track = [(1,0)
+                  ,(2,0)
+                  ,(3,0)
+                  ,(4,0)
+                  ,(5,0)]
       
       let (newBoard0, step0) = setNextCanditate sudoku (0,0) dictonary
       tst_EQUAL newBoard0 board0             
       let (_ , track_A0) = step0 ([],track)
-      tst_EQUAL ((2,0),[Tmp "2"]) (head track_A0)
+      tst_EQUAL (2,0) (head track_A0)
       putStrLn("setNextCanditate, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))
  
       let (newBoard1, step1) = setNextCanditate board0 (0,0) dictonary
       tst_EQUAL newBoard1 board1  
       let (_, track_A1) = step1 ([],track)
-      tst_EQUAL ((2,0),[Tmp "2"]) (head track_A1)
+      tst_EQUAL (2,0) (head track_A1)
       putStrLn("setNextCanditate, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))
 
       let (newBoard2, step2) = setNextCanditate board1 (0,0) dictonary
       tst_EQUAL newBoard2 board2  
       let (_, track_A2) = step2 ([],track)
-      tst_EQUAL ((2,0),[Tmp "2"]) (head track_A2)
+      tst_EQUAL (2,0) (head track_A2)
       putStrLn("setNextCanditate, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))     
        
       let (newBoard10, step10) = setNextCanditate (replaceXY sudoku (0,0) (Tmp "9")) (0,0) dictonary
       tst_EQUAL newBoard10 sudoku 
       let (_, track_A10) = step10 (track,[])
-      tst_EQUAL ((5,0),[Tmp "5"]) (head track_A10)
+      tst_EQUAL (5,0) (head track_A10)
       putStrLn("setNextCanditate, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))
       
       let (newBoard11, step11) = setNextCanditate (replaceXY sudoku (2,0) (Tmp "9")) (2,0) dictonary
       tst_EQUAL newBoard11 sudoku 
       let (_, track_A11) = step11 (track,[])
-      tst_EQUAL ((5,0),[Tmp "5"]) (head track_A11)
+      tst_EQUAL (5,0) (head track_A11)
       putStrLn("setNextCanditate, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))   
 
-      --board step track dictonary
-test_sortedBacktrack :: IO ()
-test_sortedBacktrack = do
-      let track0= createSortedTrack s0 (Nothing,Nothing) dictonary
-      let s0' = sortedBacktrack s0 ([],track0) dictonary
+test_backtrack :: IO ()
+test_backtrack = do
+      let track0= Track.createSorted s0 dictonary
+      let s0' = backtrack s0 ([],track0) dictonary
       tst_EQUAL s0' solvedSudoku
-      putStrLn("sortedBacktrack, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))
+      putStrLn("backtrack, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))
       
-      let track1 = createSortedTrack s1 (Nothing,Nothing) dictonary
-      let s1' = sortedBacktrack s1 ([],track1) dictonary
+      let track1 = Track.createSorted s1 dictonary
+      let s1' = backtrack s1 ([],track1) dictonary
       tst_EQUAL s1' solvedSudoku
-      putStrLn("sortedBacktrack, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))      
+      putStrLn("backtrack, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))      
            
-      let track2 = createSortedTrack s2 (Nothing,Nothing) dictonary
-      let s2' = sortedBacktrack s2 ([],track2) dictonary
-      tst_EQUAL s1' solvedSudoku
-      putStrLn("sortedBacktrack, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))  
+      let track2 = Track.createSorted s2 dictonary
+      let s2' = backtrack s2 ([],track2) dictonary
+      tst_EQUAL s2' solvedSudoku
+      putStrLn("backtrack, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))  
 
-      let track3 = createSortedTrack s3 (Nothing,Nothing) dictonary
-      let s3' = sortedBacktrack s3 ([],track3) dictonary
+      let track3 = Track.createSorted s3 dictonary
+      let s3' = backtrack s3 ([],track3) dictonary
       tst_EQUAL s3' solvedSudoku
-      putStrLn("sortedBacktrack, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))  
+      putStrLn("backtrack, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))  
 
-      let track4 = createSortedTrack s4 (Nothing,Nothing) dictonary
-      let s4' = sortedBacktrack s4 ([],track4) dictonary
+      let track4 = Track.createSorted s4 dictonary
+      let s4' = backtrack s4 ([],track4) dictonary
       tst_EQUAL s4' solvedSudoku
-      putStrLn("sortedBacktrack, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))  
+      putStrLn("backtrack, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))  
 
-      let track5 = createSortedTrack s5 (Nothing,Nothing) dictonary
-      let s5' = sortedBacktrack s5 ([],track5) dictonary
+      let track5 = Track.createSorted s5 dictonary
+      let s5' = backtrack s5 ([],track5) dictonary
       tst_EQUAL s5' solvedSudoku
-      putStrLn("sortedBacktrack, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))  
+      putStrLn("backtrack, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))  
 
-      let trackSudoku = createSortedTrack sudoku (Nothing,Nothing) dictonary
-      let sudoku' = sortedBacktrack sudoku ([],trackSudoku) dictonary
+      let trackSudoku = Track.createSorted sudoku dictonary
+      let sudoku' = backtrack sudoku ([],trackSudoku) dictonary
       tst_EQUAL sudoku' solvedSudoku
-      putStrLn("sortedBacktrack, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))     
-
-      let trackSudoku = createSortedTrack sudoku (Nothing,Nothing) dictonary
-      let sudoku' = sortedBacktrack sudoku ([],trackSudoku) dictonary
-      tst_EQUAL sudoku' solvedSudoku
-      putStrLn("sortedBacktrack, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int)) 
-
+      putStrLn("backtrack, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int)) 
  
-      let trackSudoku17 = createSortedTrack sudoku_17 (Nothing,Nothing) dictonary
-      let sudoku17' = sortedBacktrack sudoku_17 ([],trackSudoku17) dictonary
+      let trackSudoku17 = Track.createSorted sudoku_17 dictonary
+      let sudoku17' = backtrack sudoku_17 ([],trackSudoku17) dictonary
       tst_EQUAL sudoku17' solvedSudoku_17
-      putStrLn("sortedBacktrack, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))
+      putStrLn("backtrack, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))
+      
