@@ -11,7 +11,7 @@ import Track
 
 test_Backtrack :: IO ()
 test_Backtrack = do
-      test_nextCell
+      test_reducing
       test_setNextCanditate
       test_backtrack
       
@@ -164,22 +164,22 @@ board2 = (field ( "5,3, , , , , , , ," ++ "\n"
                ++ " , , ,4,1,9, , ,5," ++ "\n"
                ++ " , , , , , , ,7, ," ++ "\n"))                
     
-test_nextCell :: IO ()
-test_nextCell = do
+test_reducing :: IO ()
+test_reducing = do
       tst_EQUAL 
-            ([Tmp "1",Tmp "2",Tmp "3"], [Tmp "4",Tmp "5",Tmp "6",Tmp "7",Tmp "8",Tmp "9"]) 
-            (nextCell dictonary sudoku (1, 0))--3
-      putStrLn("nextCell, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))      
+            ([Tmp "4",Tmp "5",Tmp "6",Tmp "7",Tmp "8",Tmp "9"]) 
+            (reducing dictonary sudoku (1, 0))--3
+      putStrLn("reducing, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))      
       
       tst_EQUAL 
-            ([Tmp "1",Tmp "2",Tmp "3",Tmp "4",Tmp "5",Tmp "6",Tmp "7",Tmp "8",Tmp "9"],[]) 
-            (nextCell dictonary sudoku (4, 1))--9
-      putStrLn("nextCell, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))
+            ([]) 
+            (reducing dictonary sudoku (4, 1))--9
+      putStrLn("reducing, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))
       
       tst_EQUAL 
-            ([],[Tmp "1",Tmp "2",Tmp "3",Tmp "4",Tmp "5",Tmp "6",Tmp "7",Tmp "8",Tmp "9"]) 
-            (nextCell dictonary sudoku (0, 0))--Empty
-      putStrLn("nextCell, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))     
+            ([Tmp "1",Tmp "2",Tmp "3",Tmp "4",Tmp "5",Tmp "6",Tmp "7",Tmp "8",Tmp "9"]) 
+            (reducing dictonary sudoku (0, 0))--Empty
+      putStrLn("reducing, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))     
 
       
 test_setNextCanditate :: IO ()

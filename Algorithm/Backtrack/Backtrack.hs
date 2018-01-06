@@ -1,7 +1,7 @@
 module Backtrack
 ( backtrack
 , setNextCanditate
-, nextCell
+, reducing
 ) where
 
 import Board
@@ -27,15 +27,15 @@ setNextCanditate board (x,y) dictonary
       | candidats == [] = ((replaceXY board (x,y) Empty), goBack)
       | otherwise       = ((replaceXY board (x,y) candidat), goForward)
       where 
-            (_,z2s) = nextCell dictonary board (x,y)
-            candidats  = [cell' | cell' <- z2s, (allowed board (x,y) cell')]
+            reduceds = reducing dictonary board (x,y)
+            candidats  = [r | r <- reduceds, (allowed board (x,y) r)]
             candidat = head candidats  
             
-nextCell :: [Cell String] -> [[Cell String]] -> (Int, Int)  
-         -> ([Cell String],[Cell String])    
-nextCell dictonary board (x,y) 
-      | i ==  Nothing = splitAt 0 dictonary
-      | otherwise     = splitAt (i'+1) dictonary
+reducing :: [Cell String] -> [[Cell String]] -> (Int, Int)  
+         -> [Cell String]
+reducing dictonary board (x,y) 
+      | i ==  Nothing = snd (splitAt 0 dictonary)
+      | otherwise     = snd (splitAt (i'+1) dictonary)
       where 
             cell = board `atXY` (x,y)
             i = findIndex (==cell) dictonary
