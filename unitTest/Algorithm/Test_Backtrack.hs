@@ -14,12 +14,11 @@ test_Backtrack = do
       test_nextCell
       test_setNextCanditate
       test_backtrack
-
-
       
 dictonary :: [Cell String]
 dictonary = [Tmp "1",Tmp "2",Tmp "3",Tmp "4",Tmp "5",Tmp "6",Tmp "7",Tmp "8",Tmp "9"]
 
+{-
 sudoku_17 :: [[Cell String]]
 sudoku_17 = (field ( " , , , , , , ,1, ," ++ "\n"
                   ++ "4, , , , , , , , ," ++ "\n"
@@ -41,7 +40,7 @@ solvedSudoku_17 = (field ( "6,9,3,7,8,4,5,1,2," ++ "\n"
                         ++ "3,1,9,4,7,5,2,6,8," ++ "\n"
                         ++ "8,5,6,1,2,9,7,4,3," ++ "\n"
                         ++ "2,7,4,8,3,6,1,5,9," ++ "\n")) 
-                        
+-}
 sudoku :: [[Cell String]]
 sudoku = (field ( " ,3, , , , , , , ," ++ "\n"
                ++ " , , ,1,9,5, , , ," ++ "\n"
@@ -52,7 +51,8 @@ sudoku = (field ( " ,3, , , , , , , ," ++ "\n"
                ++ " ,6, , , , ,2,8, ," ++ "\n"
                ++ " , , ,4,1,9, , ,5," ++ "\n"
                ++ " , , , , , , ,7, ," ++ "\n")) 
-               
+  
+  
 solvedSudoku :: [[Cell String]]               
 solvedSudoku = (field ( "5,3,4,6,7,8,9,1,2," ++ "\n"
                      ++ "6,7,2,1,9,5,3,4,8," ++ "\n"
@@ -252,6 +252,8 @@ test_backtrack = do
       tst_EQUAL s5' solvedSudoku
       putStrLn("backtrack, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))  
 
+{-    needs about 40 secounds this two tests together  
+
       let trackSudoku = Track.createSorted sudoku dictonary
       let sudoku' = backtrack sudoku ([],trackSudoku) dictonary
       tst_EQUAL sudoku' solvedSudoku
@@ -261,4 +263,4 @@ test_backtrack = do
       let sudoku17' = backtrack sudoku_17 ([],trackSudoku17) dictonary
       tst_EQUAL sudoku17' solvedSudoku_17
       putStrLn("backtrack, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))
-      
+-}      
