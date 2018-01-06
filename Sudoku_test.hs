@@ -8,7 +8,6 @@ import Test_Field
 import Test_Block
 import Test_Rule
 import Test_Board
-import Test_BruteforceBacktrack
 import Test_Track
 import Test_Backtrack
 
@@ -25,8 +24,6 @@ main = do
       test_Rule
       putStrLn "  "
       test_Board
-      putStrLn "  "
-      test_BruteforceBacktrack
       putStrLn "  "
       test_Track
       putStrLn "  "
