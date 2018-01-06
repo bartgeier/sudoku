@@ -8,13 +8,11 @@ import Data.List
 import Board
 import Tool_List
 
-
-
 column  :: [[Cell String]] -> Int -> Cell String -> Bool  
 column xs idx cell = row (transpose xs) idx cell
       
 row :: [[Cell String]] -> Int -> Cell String -> Bool 
-row [] _ _ = False 
+row [] _ _ = False   
 row board idx  cell  
       | findIndex (==cell) row' == Nothing = False
       | findIndex (==cell) row' /= Nothing = True 
