@@ -23,7 +23,7 @@ test_Field = do
       test_endIndex
       
       
-sudoku :: [[Cell String]]
+sudoku :: Field
 sudoku = (field ( " ,3, , , , , , , ," ++ "\n"
                ++ " , , ,1,9,5, , , ," ++ "\n"
                ++ " , ,8, , , , ,6, ," ++ "\n"

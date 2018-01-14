@@ -10,7 +10,7 @@ import Track.Internal
 type Track  = [(Int,Int)] 
 type ZippedTrack  = (Track ,Track)
 
-createSorted :: [[Cell String]] -> [Cell String] 
+createSorted :: Field -> [Cell String] 
       -> Track
 createSorted board dictonary =
       [x | (x,_) <- sorted board (Nothing,Nothing) dictonary] 

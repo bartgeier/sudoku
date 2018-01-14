@@ -20,7 +20,7 @@ test_Track = do
 dictonary :: [Cell String]
 dictonary = [Tmp "1",Tmp "2",Tmp "3",Tmp "4",Tmp "5",Tmp "6",Tmp "7",Tmp "8",Tmp "9"]
                       
-sudoku :: [[Cell String]]
+sudoku :: Field
 sudoku = (field ( " ,3, , , , , , , ," ++ "\n"
                ++ " , , ,1,9,5, , , ," ++ "\n"
                ++ " , ,8, , , , ,6, ," ++ "\n"
@@ -31,7 +31,7 @@ sudoku = (field ( " ,3, , , , , , , ," ++ "\n"
                ++ " , , ,4,1,9, , ,5," ++ "\n"
                ++ " , , , , , , ,7, ," ++ "\n")) 
                  
-s0 :: [[Cell String]]               
+s0 :: Field               
 s0 = (field ( "5,3,4,6,7,8,9,1,2," ++ "\n"
            ++ "6,7,2,1,9,5,3,4,8," ++ "\n"
            ++ "1,9,8,3,4,2,5,6,7," ++ "\n"

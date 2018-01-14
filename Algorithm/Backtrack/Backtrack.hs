@@ -10,8 +10,8 @@ import Rule
 import Tool_List
 import Track
          
-backtrack :: [[Cell String]] -> ZippedTrack -> [Cell String] 
-      -> [[Cell String]]
+backtrack :: Field -> ZippedTrack -> [Cell String] 
+      -> Field
 backtrack board (_,[]) _ = board      
 backtrack board track dictonary =
       backtrack newBoard newTrack dictonary
@@ -21,8 +21,8 @@ backtrack board track dictonary =
             (newBoard, step) = setNextCanditate board (x,y) dictonary
             newTrack = step track
 
-setNextCanditate :: [[Cell String]] -> (Int, Int) -> [Cell String] 
-        -> ([[Cell String]], (ZippedTrack -> ZippedTrack))       
+setNextCanditate :: Field -> (Int, Int) -> [Cell String] 
+        -> (Field, (ZippedTrack -> ZippedTrack))       
 setNextCanditate board (x,y) dictonary
       | candidats == [] = ((replaceXY board (x,y) Empty), goBack)
       | otherwise       = ((replaceXY board (x,y) candidat), goForward)
@@ -31,7 +31,7 @@ setNextCanditate board (x,y) dictonary
             candidats  = [r | r <- reduceds, (allowed board (x,y) r)]
             candidat = head candidats  
             
-reducing :: [Cell String] -> [[Cell String]] -> (Int, Int)  
+reducing :: [Cell String] -> Field -> (Int, Int)  
          -> [Cell String]
 reducing dictonary board (x,y) 
       | i ==  Nothing = snd (splitAt 0 dictonary)

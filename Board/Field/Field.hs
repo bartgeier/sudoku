@@ -1,5 +1,6 @@
 module Field
-( field
+( Field
+, field
 , isField
 , width
 , height
@@ -11,29 +12,30 @@ import Control.Exception
 import Field.Internal
 import Cell
 
+type Field = [[Cell String]]
  
-field :: String -> [[Cell String]]
+field :: String -> Field
 field xs =  
       let f = lines xs
       in  [createRow n | n <- f]
 
-width :: [[Cell String]] -> Int
+width :: Field -> Int
 width [] = assert (False) 0
 width (x:xs) = assert (isField (x:xs)) $ length x    
 
-height :: [[Cell String]] -> Int
+height :: Field -> Int
 height x = width x
 
-grad :: [[Cell String]] -> Int
+grad :: Field -> Int
 grad xs = assert (isSquare xs) $
       let Just width' = (checkWidths xs)
           root = (sqrt (fromIntegral width'::Float))
       in (floor root)::Int
   
-isField :: [[Cell String]] -> Bool 
+isField :: Field -> Bool 
 isField [] = False
 isField  xs = (isSquare xs) && (isLineSquare xs)
 
-endIndex :: [[Cell String]] -> Int
+endIndex :: Field -> Int
 endIndex xs = assert (isField xs) $
       (width xs)-1
