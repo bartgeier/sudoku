@@ -11,6 +11,11 @@ import Test_Board
 import Test_Track
 import Test_Backtrack
 
+import Data.IORef
+
+import TestKit
+
+                      
 main :: IO ()
 main = do 
       test_Tool_List
@@ -28,5 +33,6 @@ main = do
       test_Track
       putStrLn "  "
       test_Backtrack
-      
+      counter <- makeCounter
+      tst_EQUAL_C counter 3 3
       
