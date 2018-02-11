@@ -18,7 +18,7 @@ makeCounter = do
       r <- newIORef 0
       return (\i -> do modifyIORef r (+i)
                        readIORef r)
-
+                       
                        
       
 {-      counter <- makeCounter
