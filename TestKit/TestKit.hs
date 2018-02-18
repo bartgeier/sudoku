@@ -21,7 +21,9 @@ makeCounter = do
                        
                        
       
-{-      counter <- makeCounter
+{-      
+
+counter <- makeCounter
       counter 1
       c <- counter 3
       d <- counter 1
