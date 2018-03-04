@@ -7,91 +7,91 @@ import PseudoMacros
 import TestKit
 import Cell
 
-test_cell :: IO ()      
-test_cell = do  
+test_cell :: UnitTestState -> IO ()     
+test_cell this = do  
     
       let aEmpty::Cell String
           aEmpty = Empty
           bEmpty::Cell String
           bEmpty = Empty
           
-      tst_EQUAL True (aEmpty == bEmpty)
+      tst_EQUAL this True (aEmpty == bEmpty)
       putStrLn("cell, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))
-      tst_EQUAL False (aEmpty /= bEmpty)
+      tst_EQUAL this False (aEmpty /= bEmpty)
       putStrLn("cell, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))      
-      tst_EQUAL False (Fix "OK" == bEmpty)
+      tst_EQUAL this False (Fix "OK" == bEmpty)
       putStrLn("cell, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))
-      tst_EQUAL False (aEmpty == Fix "OK")
+      tst_EQUAL this False (aEmpty == Fix "OK")
       putStrLn("cell, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))  
-      tst_EQUAL True (Fix "OK" /= bEmpty)
+      tst_EQUAL this True (Fix "OK" /= bEmpty)
       putStrLn("cell, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))
-      tst_EQUAL True (aEmpty /= Fix "OK")
+      tst_EQUAL this True (aEmpty /= Fix "OK")
       putStrLn("cell, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))        
-      tst_EQUAL False (Tmp "OK" == bEmpty)
+      tst_EQUAL this False (Tmp "OK" == bEmpty)
       putStrLn("cell, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))
-      tst_EQUAL False (aEmpty == Tmp "OK")
+      tst_EQUAL this False (aEmpty == Tmp "OK")
       putStrLn("cell, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int)) 
-      tst_EQUAL True (Tmp "OK" /= bEmpty)
+      tst_EQUAL this True (Tmp "OK" /= bEmpty)
       putStrLn("cell, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))
-      tst_EQUAL True (aEmpty /= Tmp "OK")
+      tst_EQUAL this True (aEmpty /= Tmp "OK")
       putStrLn("cell, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))       
 
-      tst_EQUAL True (Fix "OK" == Fix "OK")
+      tst_EQUAL this True (Fix "OK" == Fix "OK")
       putStrLn("cell, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))
-      tst_EQUAL False (Fix "OK" /= Fix "OK")
+      tst_EQUAL this False (Fix "OK" /= Fix "OK")
       putStrLn("cell, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))    
-      tst_EQUAL False (Fix "OK" == Fix "UPS")
+      tst_EQUAL this False (Fix "OK" == Fix "UPS")
       putStrLn("cell, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))
-      tst_EQUAL True (Fix "OK" /= Fix "UPS")
+      tst_EQUAL this True (Fix "OK" /= Fix "UPS")
       putStrLn("cell, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))   
 
-      tst_EQUAL True (Fix "OK" == Tmp "OK")
+      tst_EQUAL this True (Fix "OK" == Tmp "OK")
       putStrLn("cell, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))  
-      tst_EQUAL True (Tmp "OK" == Fix "OK")
+      tst_EQUAL this True (Tmp "OK" == Fix "OK")
       putStrLn("cell, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))   
-      tst_EQUAL False (Fix "OK" /= Tmp "OK")
+      tst_EQUAL this False (Fix "OK" /= Tmp "OK")
       putStrLn("cell, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))  
-      tst_EQUAL False (Tmp "OK" /= Fix "OK")
+      tst_EQUAL this False (Tmp "OK" /= Fix "OK")
       putStrLn("cell, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))        
-      tst_EQUAL False (Fix "OK" == Tmp "UPS")
+      tst_EQUAL this False (Fix "OK" == Tmp "UPS")
       putStrLn("cell, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))  
-      tst_EQUAL False (Tmp "UPS" == Fix "OK")
+      tst_EQUAL this False (Tmp "UPS" == Fix "OK")
       putStrLn("cell, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))       
-      tst_EQUAL True (Fix "OK" /= Tmp "UPS")
+      tst_EQUAL this True (Fix "OK" /= Tmp "UPS")
       putStrLn("cell, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))  
-      tst_EQUAL True (Tmp "UPS" /= Fix "OK")
+      tst_EQUAL this True (Tmp "UPS" /= Fix "OK")
       putStrLn("cell, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))   
 
-      tst_EQUAL True (Tmp "OK" == Tmp "OK")
+      tst_EQUAL this True (Tmp "OK" == Tmp "OK")
       putStrLn("cell, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))
-      tst_EQUAL False (Tmp "OK" /= Tmp "OK")
+      tst_EQUAL this False (Tmp "OK" /= Tmp "OK")
       putStrLn("cell, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))    
-      tst_EQUAL False (Tmp "OK" == Tmp "UPS")
+      tst_EQUAL this False (Tmp "OK" == Tmp "UPS")
       putStrLn("cell, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))
-      tst_EQUAL True (Tmp "OK" /= Tmp "UPS")
+      tst_EQUAL this True (Tmp "OK" /= Tmp "UPS")
       putStrLn("cell, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))  
       
-      test_fix
-      test_notFix
+      test_fix this
+      test_notFix this
  
-test_fix :: IO ()      
-test_fix = do
-     tst_EQUAL False (fix (Tmp "1"))
+test_fix :: UnitTestState -> IO ()     
+test_fix this = do
+     tst_EQUAL this False (fix (Tmp "1"))
      putStrLn("fix, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))  
-     tst_EQUAL False (fix (Tmp (5::Int)))
+     tst_EQUAL this False (fix (Tmp (5::Int)))
      putStrLn("fix, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int)) 
-     tst_EQUAL False (fix Empty)
+     tst_EQUAL this False (fix Empty)
      putStrLn("fix, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int)) 
-     tst_EQUAL True (fix (Fix "Hallo"))
+     tst_EQUAL this True (fix (Fix "Hallo"))
      putStrLn("fix, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int)) 
      
-test_notFix :: IO ()      
-test_notFix = do
-     tst_EQUAL True (notFix (Tmp "1"))
+test_notFix :: UnitTestState -> IO ()   
+test_notFix this = do
+     tst_EQUAL this True (notFix (Tmp "1"))
      putStrLn("fix, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))  
-     tst_EQUAL True (notFix (Tmp (5::Int)))
+     tst_EQUAL this True (notFix (Tmp (5::Int)))
      putStrLn("fix, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int)) 
-     tst_EQUAL True (notFix Empty)
+     tst_EQUAL this True (notFix Empty)
      putStrLn("fix, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int)) 
-     tst_EQUAL False (notFix (Fix "Hallo"))
+     tst_EQUAL this False (notFix (Fix "Hallo"))
      putStrLn("fix, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))      

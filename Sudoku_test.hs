@@ -18,21 +18,22 @@ import TestKit
                       
 main :: IO ()
 main = do 
-      test_Tool_List
+      ref <- newIORef (0::Int,0::Int)
+
+      test_Tool_List ref
       putStrLn "  "
-      test_cell
+      test_cell ref
       putStrLn "  "
-      test_Field
+      test_Field ref
       putStrLn "  "
-      test_Block      
+      test_Block ref     
       putStrLn "  "     
-      test_Rule
+      test_Rule ref
       putStrLn "  "
-      test_Board
+      test_Board ref
       putStrLn "  "
-      test_Track
+      test_Track ref
       putStrLn "  "
-      test_Backtrack
-      counter <- makeCounter
-      tst_EQUAL_C counter 3 3
+      test_Backtrack ref
+      tst_TOTAL ref
       

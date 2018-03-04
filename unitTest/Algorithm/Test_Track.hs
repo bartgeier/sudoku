@@ -10,12 +10,12 @@ import Track
 import Track.Internal
 import Tool_List
 
-test_Track :: IO ()
-test_Track = do
-      test_candidates
-      test_createSorted
-      test_goForward
-      test_goBack
+test_Track :: UnitTestState -> IO ()
+test_Track this = do
+      test_candidates this 
+      test_createSorted this 
+      test_goForward this 
+      test_goBack this 
       
 dictonary :: [Cell String]
 dictonary = [Tmp "1",Tmp "2",Tmp "3",Tmp "4",Tmp "5",Tmp "6",Tmp "7",Tmp "8",Tmp "9"]
@@ -42,47 +42,47 @@ s0 = (field ( "5,3,4,6,7,8,9,1,2," ++ "\n"
            ++ "2,8,7,4,1,9,6,3,5," ++ "\n"
            ++ "3,4,5,2,8,6,1,7, ," ++ "\n")) 
                                      
-test_candidates :: IO ()          
-test_candidates = do
-      tst_EQUAL ((0,2),[Tmp "1",Tmp "2",Tmp "5",Tmp "7",Tmp "9"]) (candidates sudoku (0,2) dictonary)
+test_candidates :: UnitTestState -> IO ()         
+test_candidates this = do
+      tst_EQUAL this ((0,2),[Tmp "1",Tmp "2",Tmp "5",Tmp "7",Tmp "9"]) (candidates sudoku (0,2) dictonary)
       putStrLn("candidates, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))
       
-      tst_EQUAL ((1,0),[]) (candidates sudoku (1,0) dictonary)
+      tst_EQUAL this ((1,0),[]) (candidates sudoku (1,0) dictonary)
       putStrLn("candidates, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))
 
-test_createSorted :: IO ()
-test_createSorted = do
+test_createSorted :: UnitTestState -> IO ()
+test_createSorted this = do
       let track1 = Track.createSorted sudoku dictonary
           
-      tst_EQUAL 61 (length track1)
+      tst_EQUAL this 61 (length track1)
       putStrLn("createSorted, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int)) 
       
-      tst_EQUAL ((7,7)) (head track1)
+      tst_EQUAL this ((7,7)) (head track1)
       putStrLn("createSorted, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int)) 
 
-      tst_EQUAL ((6,5)) (last track1)
+      tst_EQUAL this ((6,5)) (last track1)
       putStrLn("createSorted, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int)) 
 
-test_goForward :: IO ()
-test_goForward = do
+test_goForward :: UnitTestState -> IO ()
+test_goForward this = do
       let track10 = Track.createSorted s0 dictonary
-      tst_EQUAL 1 (length track10)
+      tst_EQUAL this 1 (length track10)
       putStrLn("goForward, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))      
-      tst_EQUAL  [(8,8)] track10
+      tst_EQUAL this [(8,8)] track10
       putStrLn("goForward, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))
       
       let zippedTrack = goForward ([],track10)
-      tst_EQUAL  ([(8,8)],[]) zippedTrack
+      tst_EQUAL this ([(8,8)],[]) zippedTrack
       putStrLn("goForward, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))
       
-test_goBack :: IO ()
-test_goBack = do
+test_goBack :: UnitTestState -> IO ()
+test_goBack this = do
       let track20 = Track.createSorted s0 dictonary
-      tst_EQUAL 1 (length track20)
+      tst_EQUAL this 1 (length track20)
       putStrLn("goBack, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))             
-      tst_EQUAL  [(8,8)] track20
+      tst_EQUAL this [(8,8)] track20
       putStrLn("goBack, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))
       
       let zippedTrack = goBack (track20,[])
-      tst_EQUAL  ([],[(8,8)]) zippedTrack
+      tst_EQUAL this ([],[(8,8)]) zippedTrack
       putStrLn("goBack, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int))      
