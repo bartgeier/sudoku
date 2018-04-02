@@ -19,7 +19,6 @@ import TestKit
 main :: IO ()
 main = do 
       ref <- newIORef (0::Int,0::Int)
-
       test_Tool_List ref
       putStrLn "  "
       test_cell ref
