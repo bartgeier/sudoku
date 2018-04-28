@@ -33,5 +33,7 @@ test_canditates this = do
     
 test_emptyBoard :: UnitTestState -> IO ()
 test_emptyBoard this = do 
-      putStrLn (show (emptyBoard sudoku))
+      putStrLn (show (numbering 0 (emptyBoard sudoku)))
       putStrLn("canditates, " ++ $__FILE__ ++ ", line " ++ show (($__LINE__)::Int)) 
+      putStrLn (show (puzzel sudoku))
+      putStrLn (show (create sudoku))
