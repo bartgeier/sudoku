@@ -17,15 +17,18 @@ data Square = Square { row :: Int
                      } deriving (Show)
                  
 type Board = [Square]
---type Pattern = [Square]
-type Set = [Square]
-type Strategie = (Set -> Square -> Square)
+type Pattern = [Square]
+type Set = [Pattern] 
+type Strategy = (Pattern -> Square -> Square)
+--grid
+
+
 
 create :: String -> Board
 create str = 
-      let sheet = numbering 0 . emptyBoard
-          setOfKnown = own (puzzel str) . sheet
-      in  mapBoard nakedSingle (setOfKnown str) (sheet str)
+      let grid = (numbering 0 . emptyBoard) str
+          givens = setOfKnowns (puzzel str) grid
+      in  mapBoard nakedSingle givens grid
       
 numbering :: Int -> Board -> Board  
 numbering _ [] = []  
@@ -35,7 +38,7 @@ numbering idx (Square{row = r, column = c,owner = o, candidates = cs }:board) =
           b' = (r' `quot` (intSqrt r)) * (intSqrt c) + (c' `quot` (intSqrt c))      
           s = Square {row = r', column = c', block = b', owner = o, candidates = cs}
       in [s] ++ (numbering (idx+1) board )
-
+      
 intSqrt :: Int -> Int
 intSqrt x = floor . sqrt $ (fromIntegral x :: Float)          
 
@@ -43,12 +46,12 @@ puzzel :: String -> [String]
 puzzel str =   
       lines [if x == ',' then '\n' else x  | x <- str, x /= '\n', x /= ' ' ]
 
-own::[String]->Board->Board      
-own _ [] = [] 
-own [] _ = [] 
-own (p:ps) (b:board)
-      | p == [] = own ps board
-      | otherwise = [b {owner = p, candidates = []}] ++ own ps board      
+setOfKnowns::[String]->Board->Set      
+setOfKnowns _ [] = [] 
+setOfKnowns [] _ = [] 
+setOfKnowns (p:ps) (b:board)
+      | p == [] = setOfKnowns ps board
+      | otherwise = [[b {owner = p, candidates = []}]] ++ setOfKnowns ps board    
 
 emptyBoard :: String -> Board
 emptyBoard str =
@@ -70,19 +73,19 @@ canditates string =
 ------------------
 
       
-mapBoard :: Strategie -> Set -> Board -> Board
-mapBoard strategie set board =  
-      let function = action strategie set
+mapBoard :: Strategy -> Set -> Board -> Board
+mapBoard strategy set board =  
+      let function = action strategy set
       in map (\m -> function m)board
       
-action :: Strategie -> Set -> Square -> Square
+action :: Strategy -> Set -> Square -> Square
 action _ [] b = b
-action strategie (x:xs) boardCell = 
-      let cell = strategie [x] boardCell
-      in action strategie xs cell
+action strategy (x:xs) boardCell = 
+      let cell = strategy x boardCell
+      in action strategy xs cell
 
---strategie      
-nakedSingle :: Strategie
+--strategy
+nakedSingle :: Strategy
 nakedSingle [] _ = error "(nakedSingle [] _)"
 nakedSingle (_:_:_) _ = error "(nakedSingle (_:_:_) _ )"
 nakedSingle [setCell] boardCell = 
@@ -98,7 +101,6 @@ nakedSingle [setCell] boardCell =
             boardCell {candidates = (delete (owner setCell) (candidates boardCell))}
       else 
             boardCell 
-
             
 
 
