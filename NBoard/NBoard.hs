@@ -21,10 +21,9 @@ type Puzzel = [Square]
 
 create :: String -> Board
 create str = 
-      let owners = own (puzzel str) . numbering 0 . emptyBoard
-          sheet = numbering 0 . emptyBoard
-      in  fixIt (owners str) (sheet str)
-
+      let sheet = numbering 0 . emptyBoard
+          owners = own (puzzel str) . sheet
+      in  mapBoard (owners str) (sheet str)
 
 emptyBoard :: String -> Board
 emptyBoard str =
@@ -36,61 +35,48 @@ emptyBoard str =
                      ,block = 0
                      ,owner = ""
                      ,candidates = canditates str}
-      in take numOfSquar (repeat s)
-      
+      in take numOfSquar (repeat s)    
 
 puzzel :: String -> [String] 
 puzzel str =   
       lines [if x == ',' then '\n' else x  | x <- str, x /= '\n', x /= ' ' ]
 
+
 own::[String]->Board->Board      
 own _ [] = []  
-own (p:ps) (Square{row = r, column = c, block = b, owner = o, candidates = cs }:board)
+own (p:ps) (b:board)
       | p == [] = own ps board
-      | otherwise = let s = Square {row = r, column = c, block = b, owner = p, candidates = []}
-                    in [s]++ own ps board
-  
-  
---fixIt :: [Square] -> Board -> Board
---fixIt sq b = map (\m -> setFix m b ) sq
-fixIt :: [Square] -> Board -> Board
-fixIt s b = map (\m -> cell s m)b
+      | otherwise = [b {owner = p, candidates = []}] ++ own ps board
+ 
+mapBoard :: [Square] -> Board -> Board
+mapBoard s b = map (\m -> cell s m)b
 
 cell :: [Square] -> Square -> Square
 cell [] b = b
-cell (x:xs) b = 
-      let n = setFix x b
-      in cell xs n
+cell (x:xs) boardCell = 
+      let newBoardCell = nakedSingle x boardCell
+      in cell xs newBoardCell
 
-setFix  :: Square -> Square -> Square
-setFix s b = 
+nakedSingle:: Square -> Square -> Square
+nakedSingle s b = 
+      if (row s) == (row b) && (column s) == (column b) 
+            then             
+            b {candidates = (delete (owner s) (candidates b)), owner = (owner s) }
+      else 
       if ((row s) == (row b) && (column s) /= (column b)
-      || (row s) /= (row b) && (column s) == (column b))
-            then b{candidates = (delete (owner s) (candidates b))}
-            else if (row s) == (row b) && (column s) == (column b)
-                  then b{candidates = (delete (owner s) (candidates b)), owner = (owner s) }
-                  else b
-                  
+      ||  (row s) /= (row b) && (column s) == (column b)
+      ||  (block s) == (block b)) 
+            then 
+            b {candidates = (delete (owner s) (candidates b))}
+      else 
+            b 
 
-
-{-
-setFix :: Square -> Board -> Board
-setFix s b =  
-      let b1 = map (\m -> 
-            if (row s) == (row m) 
-            then m{candidates = (delete (owner s) (candidates m))}
-            else m) b
-      in map (\m -> 
-            if (column s) == (column m) 
-            then m{candidates = (delete (owner s) (candidates m))}
-            else m) b1
--}    
-        
+            
       
 canditates :: String -> [String]
-canditates str =
-      let xs = nub (lines [if x == ',' then '\n' else x  | x <- str, x /= '\n', x /= ' ' ])
-      in [c | c <- xs, c /= ""]
+canditates string =
+      let strings = nub (lines [if chr == ',' then '\n' else chr  | chr <- string, chr /= '\n', chr /= ' ' ])
+      in [c | c <- strings, c /= ""]
       
 numbering :: Int -> Board -> Board  
 numbering _ [] = []  
