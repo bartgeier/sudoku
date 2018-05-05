@@ -1,28 +1,11 @@
-module NBoard
-( Square(..)
-, canditates
-, emptyBoard
-,numbering
-,puzzel
+module CreateSudoku
+(module SudokuTypes
 ,create
+,canditates
 ) where
 
 import Data.List
-
-data Square = Square { row :: Int  
-                     , column :: Int  
-                     , block :: Int   
-                     , owner :: String  
-                     , candidates :: [String]  
-                     } deriving (Show)
-                 
-type Board = [Square]
-type Pattern = [Square]
-type Set = [Pattern] 
-type Strategy = (Pattern -> Square -> Square)
---grid
-
-
+import SudokuTypes
 
 create :: String -> Board
 create str = 
@@ -32,12 +15,13 @@ create str =
       
 numbering :: Int -> Board -> Board  
 numbering _ [] = []  
-numbering idx (Square{row = r, column = c,owner = o, candidates = cs }:board) = 
-      let r' = idx `quot` c
-          c' = idx `mod` c
+numbering counter (Square{row = r, column = c,owner = o, candidates = cs }:board) = 
+      let i' = counter
+          r' = counter `quot` c
+          c' = counter `mod` c
           b' = (r' `quot` (intSqrt r)) * (intSqrt c) + (c' `quot` (intSqrt c))      
-          s = Square {row = r', column = c', block = b', owner = o, candidates = cs}
-      in [s] ++ (numbering (idx+1) board )
+          s = Square {idx = i', row = r', column = c', block = b', owner = o, candidates = cs}
+      in [s] ++ (numbering (counter+1) board )
       
 intSqrt :: Int -> Int
 intSqrt x = floor . sqrt $ (fromIntegral x :: Float)          
@@ -46,7 +30,7 @@ puzzel :: String -> [String]
 puzzel str =   
       lines [if x == ',' then '\n' else x  | x <- str, x /= '\n', x /= ' ' ]
 
-setOfKnowns::[String]->Board->Set      
+setOfKnowns::[String]->Board->PatternList      
 setOfKnowns _ [] = [] 
 setOfKnowns [] _ = [] 
 setOfKnowns (p:ps) (b:board)
@@ -58,7 +42,8 @@ emptyBoard str =
       let numOfRow = length [lineFeed | lineFeed <- str, lineFeed == '\n']
           numOfSquar = length [squa | squa <- str, squa == ',']
           numOfColumn =  quot numOfSquar numOfRow          
-          s = Square {row = numOfRow
+          s = Square {idx = 0
+                     ,row = numOfRow
                      ,column = numOfColumn
                      ,block = 0
                      ,owner = ""
@@ -73,12 +58,12 @@ canditates string =
 ------------------
 
       
-mapBoard :: Strategy -> Set -> Board -> Board
+mapBoard :: Strategy -> PatternList -> Board -> Board
 mapBoard strategy set board =  
       let function = action strategy set
       in map (\m -> function m)board
       
-action :: Strategy -> Set -> Square -> Square
+action :: Strategy -> PatternList -> Square -> Square
 action _ [] b = b
 action strategy (x:xs) boardCell = 
       let cell = strategy x boardCell
