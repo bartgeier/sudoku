@@ -11,6 +11,7 @@ import Test_Board
 import Test_Track
 import Test_Backtrack
 import Test_CreateSudoku
+import Test_Strategys
 
 import Data.IORef
 
@@ -35,6 +36,9 @@ main = do
       test_Track ref
       putStrLn "  "
       test_Backtrack ref
+      putStrLn "  "
       test_CreateSudoku ref
+      putStrLn " "
+      test_Strategys ref
       tst_TOTAL ref
       
